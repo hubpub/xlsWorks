@@ -1,4 +1,4 @@
-package com.vaadin.tutorial.addressbook;
+package com.cseur.createRouting;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -6,8 +6,8 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.tutorial.addressbook.backend.Contact;
-import com.vaadin.tutorial.addressbook.backend.ContactService;
+import com.cseur.createRoutingService.Routing;
+import com.cseur.createRoutingService.RoutingService;
 import com.vaadin.ui.*;
 
 import javax.servlet.annotation.WebServlet;
@@ -18,9 +18,9 @@ import javax.servlet.annotation.WebServlet;
  * By default, a new UI instance is automatically created when the page is loaded. To reuse
  * the same instance, add @PreserveOnRefresh.
  */
-@Title("Addressbook")
+@Title("Create Routing")
 @Theme("valo")
-public class AddressbookUI extends UI {
+public class CreateRoutingUI extends UI {
 
 
 
@@ -35,16 +35,16 @@ public class AddressbookUI extends UI {
 	 * are over 500 more in vaadin.com/directory.
      */
     TextField filter = new TextField();
-    Grid contactList = new Grid();
-    Button newContact = new Button("New contact");
+    Grid routingList = new Grid();
+    Button newRouting = new Button("New Routing");
 
-    // ContactForm is an example of a custom component class
-    ContactForm contactForm = new ContactForm();
+    // RoutingForm is an example of a custom component class
+    RoutingForm contactForm = new RoutingForm();
 
-    // ContactService is a in-memory mock DAO that mimics
+    // RoutingService is a in-memory mock DAO that mimics
     // a real-world datasource. Typically implemented for
     // example as EJB or Spring Data based service.
-    ContactService service = ContactService.createDemoService();
+    RoutingService service = RoutingService.createDemoService();
 
 
     /* The "Main method".
@@ -67,20 +67,18 @@ public class AddressbookUI extends UI {
          * to synchronously handle those events. Vaadin automatically sends
          * only the needed changes to the web page without loading a new page.
          */
-        newContact.addClickListener(e -> contactForm.edit(new Contact()));
+        newRouting.addClickListener(e -> contactForm.edit(new Routing()));
 
-        filter.setInputPrompt("Filter contacts...");
-        filter.addTextChangeListener(e -> refreshContacts(e.getText()));
+        filter.setInputPrompt("Filter Routings ...");
+        filter.addTextChangeListener(e -> refreshRoutings(e.getText()));
 
-        contactList.setContainerDataSource(new BeanItemContainer<>(Contact.class));
-        contactList.setColumnOrder("firstName", "lastName", "email");
-        contactList.removeColumn("id");
-        contactList.removeColumn("birthDate");
-        contactList.removeColumn("phone");
-        contactList.setSelectionMode(Grid.SelectionMode.SINGLE);
-        contactList.addSelectionListener(e
-                -> contactForm.edit((Contact) contactList.getSelectedRow()));
-        refreshContacts();
+        routingList.setContainerDataSource(new BeanItemContainer<>(Routing.class));
+        routingList.setColumnOrder("POL", "POD");
+        routingList.removeColumn("id");
+        routingList.setSelectionMode(Grid.SelectionMode.SINGLE);
+        routingList.addSelectionListener(e
+                -> contactForm.edit((Routing) routingList.getSelectedRow()));
+        refreshRoutings();
     }
 
     /* Robust layouts.
@@ -95,15 +93,15 @@ public class AddressbookUI extends UI {
      * with Vaadin Designer, CSS and HTML.
      */
     private void buildLayout() {
-        HorizontalLayout actions = new HorizontalLayout(filter, newContact);
+        HorizontalLayout actions = new HorizontalLayout(filter, newRouting);
         actions.setWidth("100%");
         filter.setWidth("100%");
         actions.setExpandRatio(filter, 1);
 
-        VerticalLayout left = new VerticalLayout(actions, contactList);
+        VerticalLayout left = new VerticalLayout(actions, routingList);
         left.setSizeFull();
-        contactList.setSizeFull();
-        left.setExpandRatio(contactList, 1);
+        routingList.setSizeFull();
+        left.setExpandRatio(routingList, 1);
 
         HorizontalLayout mainLayout = new HorizontalLayout(left, contactForm);
         mainLayout.setSizeFull();
@@ -121,13 +119,13 @@ public class AddressbookUI extends UI {
      * With Vaadin you can follow MVC, MVP or any other design pattern
      * you choose.
      */
-    void refreshContacts() {
-        refreshContacts(filter.getValue());
+    void refreshRoutings() {
+        refreshRoutings(filter.getValue());
     }
 
-    private void refreshContacts(String stringFilter) {
-        contactList.setContainerDataSource(new BeanItemContainer<>(
-                Contact.class, service.findAll(stringFilter)));
+    private void refreshRoutings(String stringFilter) {
+        routingList.setContainerDataSource(new BeanItemContainer<>(
+                Routing.class, service.findAll(stringFilter)));
         contactForm.setVisible(false);
     }
 
@@ -140,7 +138,7 @@ public class AddressbookUI extends UI {
      *  class name and turn on production mode when you have finished developing the application.
      */
     @WebServlet(urlPatterns = "/*")
-    @VaadinServletConfiguration(ui = AddressbookUI.class, productionMode = false)
+    @VaadinServletConfiguration(ui = CreateRoutingUI.class, productionMode = false)
     public static class MyUIServlet extends VaadinServlet {
     }
 

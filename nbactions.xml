@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-jetty:run</actionName>
+            <displayName>jetty:run</displayName>
+            <goals>
+                <goal>jetty:run</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM--Djetty.reload=automatic -Djetty.scanIntervalSeconds=2 jetty:run</actionName>
+            <displayName>-Djetty.reload=automatic -Djetty.scanIntervalSeconds=2 jetty:run</displayName>
+            <goals>
+                <goal>-Djetty.reload=automatic</goal>
+                <goal>-Djetty.scanIntervalSeconds=2</goal>
+                <goal>jetty:run</goal>
+            </goals>
+        </action>
+    </actions>

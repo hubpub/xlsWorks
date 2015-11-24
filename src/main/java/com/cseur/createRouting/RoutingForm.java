@@ -1,9 +1,10 @@
-package com.vaadin.tutorial.addressbook;
+package com.cseur.createRouting;
 
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.event.ShortcutAction;
-import com.vaadin.tutorial.addressbook.backend.Contact;
+import com.cseur.createRoutingService.Routing;
+import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.themes.ValoTheme;
@@ -16,24 +17,27 @@ import com.vaadin.ui.themes.ValoTheme;
  * Similarly named field by naming convention or customized
  * with @PropertyId annotation.
  */
-public class ContactForm extends FormLayout {
+public class RoutingForm extends FormLayout {
 
     Button save = new Button("Save", this::save);
     Button cancel = new Button("Cancel", this::cancel);
-    TextField firstName = new TextField("First name");
-    TextField lastName = new TextField("Last name");
-    TextField phone = new TextField("Phone");
-    TextField email = new TextField("Email");
-    DateField birthDate = new DateField("Birth date");
+    TextField POL = new TextField("POL:");
+    TextField POD = new TextField("POD:");
+    TextField VIA01 = new TextField("VIA01:");
+    TextField VIA02 = new TextField("VIA02:");
+    TextField VIA03 = new TextField("VIA03:");
+    TextField VIA04 = new TextField("VIA04:");
+    TextField routeCode = new TextField("RouteCode:");
+    DateField lastUpdateDate = new DateField("LastUpdateDate:");
 
-    Contact contact;
+    Routing routing;
 
     // Easily bind forms to beans and manage validation and buffering
-    BeanFieldGroup<Contact> formFieldBindings;
+    BeanFieldGroup<Routing> formFieldBindings;
 
-    public ContactForm() {
+    public RoutingForm() {
         configureComponents();
-        buildLayout();
+        addEditPannel();
     }
 
     private void configureComponents() {
@@ -47,14 +51,15 @@ public class ContactForm extends FormLayout {
         setVisible(false);
     }
 
-    private void buildLayout() {
+    private void addEditPannel() {
         setSizeUndefined();
         setMargin(true);
 
         HorizontalLayout actions = new HorizontalLayout(save, cancel);
         actions.setSpacing(true);
-
-		addComponents(actions, firstName, lastName, phone, email, birthDate);
+//        routeCode.setReadOnly(true);
+        lastUpdateDate.setResolution(Resolution.SECOND);
+        addComponents(actions, POL, POD, VIA01, VIA02, VIA03, VIA04, routeCode, lastUpdateDate);
     }
 
     /* Use any JVM language.
@@ -74,13 +79,13 @@ public class ContactForm extends FormLayout {
             formFieldBindings.commit();
 
             // Save DAO to backend with direct synchronous service API
-            getUI().service.save(contact);
+            getUI().service.save(routing);
 
             String msg = String.format("Saved '%s %s'.",
-                    contact.getFirstName(),
-                    contact.getLastName());
-            Notification.show(msg,Type.TRAY_NOTIFICATION);
-            getUI().refreshContacts();
+                    routing.getPOL(),
+                    routing.getPOD());
+            Notification.show(msg, Type.TRAY_NOTIFICATION);
+            getUI().refreshRoutings();
         } catch (FieldGroup.CommitException e) {
             // Validation exceptions could be shown here
         }
@@ -89,22 +94,23 @@ public class ContactForm extends FormLayout {
     public void cancel(Button.ClickEvent event) {
         // Place to call business logic.
         Notification.show("Cancelled", Type.TRAY_NOTIFICATION);
-        getUI().contactList.select(null);
+        getUI().routingList.select(null);
     }
 
-    void edit(Contact contact) {
-        this.contact = contact;
-        if(contact != null) {
-            // Bind the properties of the contact POJO to fiels in this form
-            formFieldBindings = BeanFieldGroup.bindFieldsBuffered(contact, this);
-            firstName.focus();
+    void edit(Routing newRouting) {
+        this.routing = newRouting;
+        if (newRouting != null) {
+            // Bind the properties of the routing POJO to fiels in this form
+            formFieldBindings = BeanFieldGroup.bindFieldsBuffered(newRouting, this);
+            routeCode.setReadOnly(true);
+            POL.focus();
         }
-        setVisible(contact != null);
+        setVisible(newRouting != null);
     }
 
     @Override
-    public AddressbookUI getUI() {
-        return (AddressbookUI) super.getUI();
+    public CreateRoutingUI getUI() {
+        return (CreateRoutingUI) super.getUI();
     }
 
 }
