@@ -49,8 +49,9 @@ public class FindInDB extends javax.swing.JFrame {
 
         try {
 
-            connection = DriverManager.getConnection(""
-);
+            connection = DriverManager.getConnection(
+                    "jdbc:oracle:thin:@10.64.6.77:1521:CSASTEST", "CSS",
+                    "zc'arjy34");
 
         } catch (SQLException e) {
 

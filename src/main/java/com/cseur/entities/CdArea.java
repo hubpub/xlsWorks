@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cseur.cd_entities;
+package com.cseur.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -28,13 +28,14 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jinliang.xue
  */
 @Entity
-@Table(name = "CD_LCC")
+@Table(name = "CD_AREA")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "CdLcc.findAll", query = "SELECT c FROM CdLcc c"),
-    @NamedQuery(name = "CdLcc.findByCode", query = "SELECT c FROM CdLcc c WHERE c.code = :code"),
-    @NamedQuery(name = "CdLcc.findByDescription", query = "SELECT c FROM CdLcc c WHERE c.description = :description")})
-public class CdLcc implements Serializable {
+    @NamedQuery(name = "CdArea.findAll", query = "SELECT c FROM CdArea c"),
+    @NamedQuery(name = "CdArea.findByCode", query = "SELECT c FROM CdArea c WHERE c.code = :code"),
+    @NamedQuery(name = "CdArea.findByDescription", query = "SELECT c FROM CdArea c WHERE c.description = :description"),
+    @NamedQuery(name = "CdArea.findByRowver", query = "SELECT c FROM CdArea c WHERE c.rowver = :rowver")})
+public class CdArea implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -42,19 +43,21 @@ public class CdLcc implements Serializable {
     @Size(min = 1, max = 3)
     @Column(name = "CODE")
     private String code;
-    @Size(max = 20)
+    @Size(max = 50)
     @Column(name = "DESCRIPTION")
     private String description;
-    @JoinColumn(name = "RCC_CODE", referencedColumnName = "CODE")
-    @ManyToOne(optional = false)
-    private CdRcc rccCode;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lccCode")
+    @Column(name = "ROWVER")
+    private Long rowver;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "areaCode")
     private Collection<CdPlace> cdPlaceCollection;
+    @JoinColumn(name = "REGION_CODE", referencedColumnName = "CODE")
+    @ManyToOne(optional = false)
+    private CdRegion regionCode;
 
-    public CdLcc() {
+    public CdArea() {
     }
 
-    public CdLcc(String code) {
+    public CdArea(String code) {
         this.code = code;
     }
 
@@ -74,12 +77,12 @@ public class CdLcc implements Serializable {
         this.description = description;
     }
 
-    public CdRcc getRccCode() {
-        return rccCode;
+    public Long getRowver() {
+        return rowver;
     }
 
-    public void setRccCode(CdRcc rccCode) {
-        this.rccCode = rccCode;
+    public void setRowver(Long rowver) {
+        this.rowver = rowver;
     }
 
     @XmlTransient
@@ -89,6 +92,14 @@ public class CdLcc implements Serializable {
 
     public void setCdPlaceCollection(Collection<CdPlace> cdPlaceCollection) {
         this.cdPlaceCollection = cdPlaceCollection;
+    }
+
+    public CdRegion getRegionCode() {
+        return regionCode;
+    }
+
+    public void setRegionCode(CdRegion regionCode) {
+        this.regionCode = regionCode;
     }
 
     @Override
@@ -101,10 +112,10 @@ public class CdLcc implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CdLcc)) {
+        if (!(object instanceof CdArea)) {
             return false;
         }
-        CdLcc other = (CdLcc) object;
+        CdArea other = (CdArea) object;
         if ((this.code == null && other.code != null) || (this.code != null && !this.code.equals(other.code))) {
             return false;
         }
@@ -113,7 +124,7 @@ public class CdLcc implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.CdLcc[ code=" + code + " ]";
+        return "entities.CdArea[ code=" + code + " ]";
     }
     
 }

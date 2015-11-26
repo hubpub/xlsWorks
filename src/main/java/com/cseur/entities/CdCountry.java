@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cseur.cd_entities;
+package com.cseur.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -12,8 +12,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -28,13 +26,14 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jinliang.xue
  */
 @Entity
-@Table(name = "CD_REGION")
+@Table(name = "CD_COUNTRY")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "CdRegion.findAll", query = "SELECT c FROM CdRegion c"),
-    @NamedQuery(name = "CdRegion.findByCode", query = "SELECT c FROM CdRegion c WHERE c.code = :code"),
-    @NamedQuery(name = "CdRegion.findByDescription", query = "SELECT c FROM CdRegion c WHERE c.description = :description")})
-public class CdRegion implements Serializable {
+    @NamedQuery(name = "CdCountry.findAll", query = "SELECT c FROM CdCountry c"),
+    @NamedQuery(name = "CdCountry.findByCode", query = "SELECT c FROM CdCountry c WHERE c.code = :code"),
+    @NamedQuery(name = "CdCountry.findByBaseCurrencyCode", query = "SELECT c FROM CdCountry c WHERE c.baseCurrencyCode = :baseCurrencyCode"),
+    @NamedQuery(name = "CdCountry.findByDescription", query = "SELECT c FROM CdCountry c WHERE c.description = :description")})
+public class CdCountry implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -42,19 +41,19 @@ public class CdRegion implements Serializable {
     @Size(min = 1, max = 3)
     @Column(name = "CODE")
     private String code;
+    @Size(max = 3)
+    @Column(name = "BASE_CURRENCY_CODE")
+    private String baseCurrencyCode;
     @Size(max = 30)
     @Column(name = "DESCRIPTION")
     private String description;
-    @JoinColumn(name = "TERITORY_CODE", referencedColumnName = "CODE")
-    @ManyToOne(optional = false)
-    private CdTeritory teritoryCode;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "regionCode")
-    private Collection<CdArea> cdAreaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "countryCode")
+    private Collection<CdPlace> cdPlaceCollection;
 
-    public CdRegion() {
+    public CdCountry() {
     }
 
-    public CdRegion(String code) {
+    public CdCountry(String code) {
         this.code = code;
     }
 
@@ -66,6 +65,14 @@ public class CdRegion implements Serializable {
         this.code = code;
     }
 
+    public String getBaseCurrencyCode() {
+        return baseCurrencyCode;
+    }
+
+    public void setBaseCurrencyCode(String baseCurrencyCode) {
+        this.baseCurrencyCode = baseCurrencyCode;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -74,21 +81,13 @@ public class CdRegion implements Serializable {
         this.description = description;
     }
 
-    public CdTeritory getTeritoryCode() {
-        return teritoryCode;
-    }
-
-    public void setTeritoryCode(CdTeritory teritoryCode) {
-        this.teritoryCode = teritoryCode;
-    }
-
     @XmlTransient
-    public Collection<CdArea> getCdAreaCollection() {
-        return cdAreaCollection;
+    public Collection<CdPlace> getCdPlaceCollection() {
+        return cdPlaceCollection;
     }
 
-    public void setCdAreaCollection(Collection<CdArea> cdAreaCollection) {
-        this.cdAreaCollection = cdAreaCollection;
+    public void setCdPlaceCollection(Collection<CdPlace> cdPlaceCollection) {
+        this.cdPlaceCollection = cdPlaceCollection;
     }
 
     @Override
@@ -101,10 +100,10 @@ public class CdRegion implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CdRegion)) {
+        if (!(object instanceof CdCountry)) {
             return false;
         }
-        CdRegion other = (CdRegion) object;
+        CdCountry other = (CdCountry) object;
         if ((this.code == null && other.code != null) || (this.code != null && !this.code.equals(other.code))) {
             return false;
         }
@@ -113,7 +112,7 @@ public class CdRegion implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.CdRegion[ code=" + code + " ]";
+        return "entities.CdCountry[ code=" + code + " ]";
     }
     
 }

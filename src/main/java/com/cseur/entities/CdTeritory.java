@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cseur.cd_entities;
+package com.cseur.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -12,8 +12,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -28,14 +26,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jinliang.xue
  */
 @Entity
-@Table(name = "CD_AREA")
+@Table(name = "CD_TERITORY")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "CdArea.findAll", query = "SELECT c FROM CdArea c"),
-    @NamedQuery(name = "CdArea.findByCode", query = "SELECT c FROM CdArea c WHERE c.code = :code"),
-    @NamedQuery(name = "CdArea.findByDescription", query = "SELECT c FROM CdArea c WHERE c.description = :description"),
-    @NamedQuery(name = "CdArea.findByRowver", query = "SELECT c FROM CdArea c WHERE c.rowver = :rowver")})
-public class CdArea implements Serializable {
+    @NamedQuery(name = "CdTeritory.findAll", query = "SELECT c FROM CdTeritory c"),
+    @NamedQuery(name = "CdTeritory.findByCode", query = "SELECT c FROM CdTeritory c WHERE c.code = :code"),
+    @NamedQuery(name = "CdTeritory.findByDescription", query = "SELECT c FROM CdTeritory c WHERE c.description = :description")})
+public class CdTeritory implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -43,21 +40,16 @@ public class CdArea implements Serializable {
     @Size(min = 1, max = 3)
     @Column(name = "CODE")
     private String code;
-    @Size(max = 50)
+    @Size(max = 30)
     @Column(name = "DESCRIPTION")
     private String description;
-    @Column(name = "ROWVER")
-    private Long rowver;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "areaCode")
-    private Collection<CdPlace> cdPlaceCollection;
-    @JoinColumn(name = "REGION_CODE", referencedColumnName = "CODE")
-    @ManyToOne(optional = false)
-    private CdRegion regionCode;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "teritoryCode")
+    private Collection<CdRegion> cdRegionCollection;
 
-    public CdArea() {
+    public CdTeritory() {
     }
 
-    public CdArea(String code) {
+    public CdTeritory(String code) {
         this.code = code;
     }
 
@@ -77,29 +69,13 @@ public class CdArea implements Serializable {
         this.description = description;
     }
 
-    public Long getRowver() {
-        return rowver;
-    }
-
-    public void setRowver(Long rowver) {
-        this.rowver = rowver;
-    }
-
     @XmlTransient
-    public Collection<CdPlace> getCdPlaceCollection() {
-        return cdPlaceCollection;
+    public Collection<CdRegion> getCdRegionCollection() {
+        return cdRegionCollection;
     }
 
-    public void setCdPlaceCollection(Collection<CdPlace> cdPlaceCollection) {
-        this.cdPlaceCollection = cdPlaceCollection;
-    }
-
-    public CdRegion getRegionCode() {
-        return regionCode;
-    }
-
-    public void setRegionCode(CdRegion regionCode) {
-        this.regionCode = regionCode;
+    public void setCdRegionCollection(Collection<CdRegion> cdRegionCollection) {
+        this.cdRegionCollection = cdRegionCollection;
     }
 
     @Override
@@ -112,10 +88,10 @@ public class CdArea implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CdArea)) {
+        if (!(object instanceof CdTeritory)) {
             return false;
         }
-        CdArea other = (CdArea) object;
+        CdTeritory other = (CdTeritory) object;
         if ((this.code == null && other.code != null) || (this.code != null && !this.code.equals(other.code))) {
             return false;
         }
@@ -124,7 +100,7 @@ public class CdArea implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.CdArea[ code=" + code + " ]";
+        return "entities.CdTeritory[ code=" + code + " ]";
     }
     
 }

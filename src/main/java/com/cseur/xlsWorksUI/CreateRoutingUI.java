@@ -1,4 +1,4 @@
-package com.cseur.createRouting;
+package com.cseur.xlsWorksUI;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -6,8 +6,8 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.cseur.createRoutingService.Routing;
-import com.cseur.createRoutingService.RoutingService;
+import com.cseur.xlsService.Routing;
+import com.cseur.xlsService.RoutingService;
 import com.vaadin.ui.*;
 
 import javax.servlet.annotation.WebServlet;
@@ -93,19 +93,23 @@ public class CreateRoutingUI extends UI {
      * with Vaadin Designer, CSS and HTML.
      */
     private void buildLayout() {
-        HorizontalLayout actions = new HorizontalLayout(filter, newRouting);
-        actions.setWidth("100%");
+        HorizontalLayout topbar = new HorizontalLayout(filter, newRouting);
+        topbar.setWidth("100%");
         filter.setWidth("100%");
-        actions.setExpandRatio(filter, 1);
+        topbar.setExpandRatio(filter, 1);
 
-        VerticalLayout left = new VerticalLayout(actions, routingList);
-        left.setSizeFull();
+        VerticalLayout tableContent = new VerticalLayout(topbar, routingList);
+        tableContent.setSizeFull();
         routingList.setSizeFull();
-        left.setExpandRatio(routingList, 1);
-
-        HorizontalLayout mainLayout = new HorizontalLayout(left, contactForm);
+        tableContent.setExpandRatio(routingList, 1);
+        
+        VerticalLayout fileTree =new VerticalLayout();
+        fileTree.setWidth(5,Unit.CM);
+        fileTree.setSizeFull();
+        
+        HorizontalLayout mainLayout = new HorizontalLayout(fileTree,tableContent, contactForm);
         mainLayout.setSizeFull();
-        mainLayout.setExpandRatio(left, 1);
+        mainLayout.setExpandRatio(tableContent, 1);
 
         // Split and allow resizing
         setContent(mainLayout);

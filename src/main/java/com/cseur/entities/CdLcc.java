@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cseur.cd_entities;
+package com.cseur.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -12,6 +12,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -26,13 +28,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jinliang.xue
  */
 @Entity
-@Table(name = "CD_RCC")
+@Table(name = "CD_LCC")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "CdRcc.findAll", query = "SELECT c FROM CdRcc c"),
-    @NamedQuery(name = "CdRcc.findByCode", query = "SELECT c FROM CdRcc c WHERE c.code = :code"),
-    @NamedQuery(name = "CdRcc.findByDescription", query = "SELECT c FROM CdRcc c WHERE c.description = :description")})
-public class CdRcc implements Serializable {
+    @NamedQuery(name = "CdLcc.findAll", query = "SELECT c FROM CdLcc c"),
+    @NamedQuery(name = "CdLcc.findByCode", query = "SELECT c FROM CdLcc c WHERE c.code = :code"),
+    @NamedQuery(name = "CdLcc.findByDescription", query = "SELECT c FROM CdLcc c WHERE c.description = :description")})
+public class CdLcc implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -40,16 +42,19 @@ public class CdRcc implements Serializable {
     @Size(min = 1, max = 3)
     @Column(name = "CODE")
     private String code;
-    @Size(max = 30)
+    @Size(max = 20)
     @Column(name = "DESCRIPTION")
     private String description;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rccCode")
-    private Collection<CdLcc> cdLccCollection;
+    @JoinColumn(name = "RCC_CODE", referencedColumnName = "CODE")
+    @ManyToOne(optional = false)
+    private CdRcc rccCode;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lccCode")
+    private Collection<CdPlace> cdPlaceCollection;
 
-    public CdRcc() {
+    public CdLcc() {
     }
 
-    public CdRcc(String code) {
+    public CdLcc(String code) {
         this.code = code;
     }
 
@@ -69,13 +74,21 @@ public class CdRcc implements Serializable {
         this.description = description;
     }
 
-    @XmlTransient
-    public Collection<CdLcc> getCdLccCollection() {
-        return cdLccCollection;
+    public CdRcc getRccCode() {
+        return rccCode;
     }
 
-    public void setCdLccCollection(Collection<CdLcc> cdLccCollection) {
-        this.cdLccCollection = cdLccCollection;
+    public void setRccCode(CdRcc rccCode) {
+        this.rccCode = rccCode;
+    }
+
+    @XmlTransient
+    public Collection<CdPlace> getCdPlaceCollection() {
+        return cdPlaceCollection;
+    }
+
+    public void setCdPlaceCollection(Collection<CdPlace> cdPlaceCollection) {
+        this.cdPlaceCollection = cdPlaceCollection;
     }
 
     @Override
@@ -88,10 +101,10 @@ public class CdRcc implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CdRcc)) {
+        if (!(object instanceof CdLcc)) {
             return false;
         }
-        CdRcc other = (CdRcc) object;
+        CdLcc other = (CdLcc) object;
         if ((this.code == null && other.code != null) || (this.code != null && !this.code.equals(other.code))) {
             return false;
         }
@@ -100,7 +113,7 @@ public class CdRcc implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.CdRcc[ code=" + code + " ]";
+        return "entities.CdLcc[ code=" + code + " ]";
     }
     
 }
