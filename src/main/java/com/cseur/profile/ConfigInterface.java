@@ -11,7 +11,7 @@ import org.apache.poi.ss.usermodel.Cell;
  *
  * @author jinliang.xue
  */
-public interface Config {
+public interface ConfigInterface {
 /**
  * 
  * @param ExcelFileName excel file name, with extension, without path
@@ -20,7 +20,7 @@ public interface Config {
 
     void setWorksheet(String worksheet);
 
-    void setTitleArea(Cell c1, Cell d2);
+    void setTitleArea(Cell[] cls);
     
     void setEndWith(String endWith);
 

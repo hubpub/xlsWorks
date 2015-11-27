@@ -90,6 +90,22 @@
                     <nohelp>true</nohelp>
                 </configuration>
             </plugin>
+            <plugin> 
+                <groupId>org.apache.maven.plugins</groupId> 
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
+                <configuration> 
+                    <webResources> 
+                        <resource> 
+                            <directory>${project.build.directory}</directory> 
+                            <targetPath>WEB-INF</targetPath>  introduced in plugin v 2.1 
+                            <includes> 
+                                <include>xlsWorks.conf</include> 
+                            </includes> 
+                        </resource> 
+                    </webResources> 
+                </configuration> 
+            </plugin> 
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>

@@ -20,7 +20,7 @@ import java.util.List;
 public class ConfigReader {
 
     File configFile;
-    List<XlsFileConfig> sftpconfig = new ArrayList<>();
+    List<XlsFileConfig> xlsVariablesConfig = new ArrayList<>();
 
     public List<XlsFileConfig> getProfile(File configFile) {
 
@@ -35,38 +35,22 @@ public class ConfigReader {
                         _xlsFileConfig.setExcelFileName(fields[0]);
                         _xlsFileConfig.setWorksheet(fields[1]);
 
-                        String[] titleArea = fields[2].split(":");
-                        if (titleArea.length > 2 && (titleArea[0].isEmpty() && titleArea[1].isEmpty() && titleArea[2].isEmpty())) {
-                            if (isVerticalTitle(titleArea)) {
-                                _xlsFileConfig.setWorksheet(fields[2]);
-                            } else if (isHorizontalTitle(titleArea)) {
-
-                            } else if (is2DTitle(titleArea)) {
-
-                            } else {
-
-                            }
-
+                        String[] contentTitle = fields[2].split(":", -1);
+                        if (contentTitle.length > 2 && !(contentTitle[0].isEmpty() && contentTitle[1].isEmpty())) {
+                            String[] titlePositions = new String[2];
+                            System.arraycopy(contentTitle, 0, titlePositions, 0, 2);
+                            _xlsFileConfig.setTitlePositions(titlePositions);
+                            _xlsFileConfig.setEndWith(contentTitle[2]);
+                            //add to config only when pass all tests.
+                            xlsVariablesConfig.add(_xlsFileConfig);
                         }
-
                     }
                 }
             }
         } catch (IOException ex) {
+            System.out.printf(ex.toString());
         }
-        return sftpconfig;
-    }
-
-    private boolean isVerticalTitle(String[] titleArea) {
-        return titleArea[0].isEmpty() && !titleArea[1].isEmpty();
-    }
-
-    private boolean isHorizontalTitle(String[] titleArea) {
-        return !titleArea[0].isEmpty() && titleArea[1].isEmpty();
-    }
-
-    private boolean is2DTitle(String[] titleArea) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return xlsVariablesConfig;
     }
 
 }

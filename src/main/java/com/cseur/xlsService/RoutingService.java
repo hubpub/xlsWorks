@@ -1,5 +1,8 @@
 package com.cseur.xlsService;
 
+import com.cseur.profile.ConfigReader;
+import com.cseur.profile.XlsFileConfig;
+import java.io.File;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.util.*;
@@ -18,11 +21,19 @@ public class RoutingService {
     // Create dummy data by randomly combining first and last names
     // Create dummy data by randomly combining first and last names
     static String[] portNames = {"DEHAM", "NLRTM", "GBFXT", "BEZEE", "FRLEH",
-        "ESVLC", "PTLEI", "PLGDY", "FIHEL", "SEGOT", "DKCOP", "RULED", "LVRIX",""};
+        "ESVLC", "PTLEI", "PLGDY", "FIHEL", "SEGOT", "DKCOP", "RULED", "LVRIX", ""};
 
     private static RoutingService instance;
 
     public static RoutingService createDemoService() {
+//C:\Users\jinliang.xue\Documents\NetBeansProjects\xlsWorks\xlsWorks.conf
+//C:\Users\jinliang.xue\Documents\NetBeansProjects\xlsWorks\src\main\java\com\cseur\xlsService\RoutingService.java
+        File xlsConfig = new File(".\\xlsWorks.conf");
+//        File xlsConfig = new File("C:\\Users\\jinliang.xue\\Documents\\NetBeansProjects\\xlsWorks\\xlsWorks.conf");
+         System.out.print(xlsConfig.isFile());
+        List<XlsFileConfig> xlsConfigs = new ConfigReader().getProfile(xlsConfig);
+        System.out.print(xlsConfigs.toString());
+
         if (instance == null) {
 
             final RoutingService contactService = new RoutingService();
@@ -31,8 +42,8 @@ public class RoutingService {
             Calendar cal = Calendar.getInstance();
             for (int i = 0; i < 100; i++) {
                 Routing routing = new Routing();
-                routing.setPOL(portNames[r.nextInt(portNames.length-1)]);
-                routing.setPOD(portNames[r.nextInt(portNames.length-1)]);
+                routing.setPOL(portNames[r.nextInt(portNames.length - 1)]);
+                routing.setPOD(portNames[r.nextInt(portNames.length - 1)]);
                 routing.setVIA01(portNames[r.nextInt(portNames.length)]);
                 routing.setVIA02(portNames[r.nextInt(portNames.length)]);
                 routing.setVIA03(portNames[r.nextInt(portNames.length)]);
