@@ -26,11 +26,8 @@ public class RoutingService {
     private static RoutingService instance;
 
     public static RoutingService createDemoService() {
-//C:\Users\jinliang.xue\Documents\NetBeansProjects\xlsWorks\xlsWorks.conf
-//C:\Users\jinliang.xue\Documents\NetBeansProjects\xlsWorks\src\main\java\com\cseur\xlsService\RoutingService.java
-        File xlsConfig = new File(".\\xlsWorks.conf");
-//        File xlsConfig = new File("C:\\Users\\jinliang.xue\\Documents\\NetBeansProjects\\xlsWorks\\xlsWorks.conf");
-         System.out.print(xlsConfig.isFile());
+        File xlsConfig = new File("..\\..\\..\\..\\..\\xlsWorks.conf");
+        System.out.print(xlsConfig.isFile());
         List<XlsFileConfig> xlsConfigs = new ConfigReader().getProfile(xlsConfig);
         System.out.print(xlsConfigs.toString());
 
