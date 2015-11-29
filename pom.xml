@@ -97,8 +97,10 @@
                 <configuration> 
                     <webResources> 
                         <resource> 
-                            <directory>${project.build.directory}</directory> 
-                            <targetPath>WEB-INF</targetPath>  introduced in plugin v 2.1 
+                            <!--<directory>${project.build.directory}</directory>--> 
+                            <directory>${project.basedir}</directory> 
+                            <!--<targetPath>WEB-INF</targetPath>  introduced in plugin v 2.1 -->
+                            <targetPath>\</targetPath>  <!--introduced in plugin v 2.1 -->
                             <includes> 
                                 <include>xlsWorks.conf</include> 
                             </includes> 
